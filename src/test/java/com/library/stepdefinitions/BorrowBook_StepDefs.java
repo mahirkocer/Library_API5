@@ -13,6 +13,7 @@ public class BorrowBook_StepDefs {
 
     @When("users click the books menu")
     public void users_click_the_books_menu() {
+        BrowserUtils.waitForClickablility(booksPage.booksBtn,10);
         booksPage.booksBtn.click();
     }
 
@@ -33,4 +34,10 @@ public class BorrowBook_StepDefs {
     public void userClickTheBarrowBookButton() {
         booksPage.borrowBook.click();
     }
-}
+
+    @And("users enters book {string} into seacrh box")
+    public void usersEntersBookIntoSeacrhBox(String bookName) {
+            booksPage.searchBox.sendKeys(bookName);
+        }
+    }
+

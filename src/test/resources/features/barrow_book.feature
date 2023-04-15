@@ -9,8 +9,10 @@ Feature: Barrow Book Function US-007
   7-Student can find book by using search box with book's Name and Author.
 
   Background:
-  Given user should log in
-@wip
+    Given user is on home page
+    And user logs in as "student"
+
+  @wip
   Scenario: Verify that user can borrow books in books page
     When users click the books menu
     And users enters book "Diceros bicornis" into seacrh box
