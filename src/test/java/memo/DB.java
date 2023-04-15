@@ -1,5 +1,6 @@
 package memo;
 
+import com.library.pages.DataPage;
 import org.junit.jupiter.api.*;
 
 import java.sql.DriverManager;
@@ -15,8 +16,8 @@ public class DB {
 
     @BeforeEach
     void setUp() throws SQLException {
-        rs = DriverManager.getConnection(Datas.urlDB, Datas.usernameDB, Datas.passDB).
-                createStatement().executeQuery(Datas.query_getlastid);
+        rs = DriverManager.getConnection(DataPage.urlDB, DataPage.usernameDB, DataPage.passDB).
+                createStatement().executeQuery(DataPage.query_getlastid);
         md = rs.getMetaData();
     }
 
@@ -29,8 +30,8 @@ public class DB {
             map.put(md.getColumnName(i), rs.getObject(i));
         }
         System.out.println(map);
-        Assertions.assertEquals(Datas.createdName, map.get("full_name"));
-        Assertions.assertEquals(Datas.createdmail, map.get("email"));
+        Assertions.assertEquals(DataPage.createdName, map.get("full_name"));
+        Assertions.assertEquals(DataPage.createdmail, map.get("email"));
     }
 
     @AfterEach

@@ -36,7 +36,8 @@ public class Driver {
             switch (browser) {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
-                    driverPool.set(new ChromeDriver());
+                    ChromeOptions options = new ChromeOptions().addArguments("--remote-allow-origins=*");
+                    driverPool.set(new ChromeDriver(options));
                     driverPool.get().manage().window().maximize();
                     break;
                 case "chrome-headless":
@@ -77,9 +78,9 @@ public class Driver {
     }
 
     public static void closeDriver() {
-        if(driverPool.get() != null){
-        driverPool.get().quit();
-        driverPool.remove();
+        if (driverPool.get() != null) {
+            driverPool.get().quit();
+            driverPool.remove();
         }
     }
 }
