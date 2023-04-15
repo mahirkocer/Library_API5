@@ -1,5 +1,6 @@
 package memo;
 
+import com.library.pages.DataPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,9 +17,9 @@ public class UI {
     void setUp() {
         WebDriverManager.chromedriver().setup();
         wd = new ChromeDriver(new ChromeOptions().addArguments("--remote-allow-origins=*"));
-        wd.get(Datas.urlWeb);
-        wd.findElement(By.cssSelector("input#inputEmail")).sendKeys(Datas.librarin);
-        wd.findElement(By.cssSelector("input#inputPassword")).sendKeys(Datas.pass);
+        wd.get(DataPage.urlWeb);
+        wd.findElement(By.cssSelector("input#inputEmail")).sendKeys(DataPage.librarin);
+        wd.findElement(By.cssSelector("input#inputPassword")).sendKeys(DataPage.pass);
         wd.findElement(By.tagName("button")).click();
     }
 

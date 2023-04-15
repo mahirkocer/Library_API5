@@ -1,5 +1,6 @@
 package memo;
 
+import com.library.pages.DataPage;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
@@ -11,12 +12,12 @@ import static io.restassured.RestAssured.given;
 public class API {
     @Test
     void test01() {
-        baseURI = Datas.urlApi;
+        baseURI = DataPage.urlApi;
 
-        Datas.token = given().accept(ContentType.JSON)
+        DataPage.token = given().accept(ContentType.JSON)
                 .contentType("application/x-www-form-urlencoded")
-                .formParam("email", Datas.librarin)
-                .formParam("password", Datas.pass)
+                .formParam("email", DataPage.librarin)
+                .formParam("password", DataPage.pass)
                 .post("/login").then().statusCode(200).extract().path("token");
     }
 
@@ -24,7 +25,7 @@ public class API {
 //jsonPath.getList("items.findAll {it.region_id==3}.country_name");
     @Test
     void test() {
-        Response response = given().header("x-library-token", Datas.token)
+        Response response = given().header("x-library-token", DataPage.token)
                 .get("/get_user_by_id/10261");
 
         Assertions.assertEquals("mylibDeleteme", response.path("full_name"));
