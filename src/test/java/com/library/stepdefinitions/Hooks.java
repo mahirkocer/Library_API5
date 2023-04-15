@@ -1,4 +1,4 @@
-package com.library.step_definitions;
+package com.library.stepdefinitions;
 
 import com.library.utilities.ConfigurationReader;
 import com.library.utilities.DBUtils;
