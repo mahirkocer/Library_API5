@@ -37,8 +37,12 @@ public class US005memoStepDefs extends US005memoPage {
     @Then("user verifies added name is seen in DB")
     public void userVerifiesCreatedNameIsInDB() {
         Map<String, Object> map = DBUtils.getRowMap(US005memoPage.query_getlastid);
-
         Assertions.assertEquals(US005memoPage.createdName, map.get("full_name"));
+    }
 
+    @Then("user verifies added user has all params by checking API")
+    public void userVerifiesAddedUserHasAllParamsByCheckingAPI() {
+        //api to hook
+        // add adress from sql or api
     }
 }
