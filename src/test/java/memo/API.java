@@ -28,7 +28,7 @@ public class API {
     void test() {
         Response response = given().header("x-library-token", DataPage.token)
                 .get("/get_user_by_id/10261");
-
+response.prettyPrint();
         Assertions.assertEquals("mylibDeleteme", response.path("full_name"));
         Assertions.assertEquals("librarian111@library", response.path("email"));
     }
