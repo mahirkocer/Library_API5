@@ -1,6 +1,7 @@
 package memo;
 
 import com.library.pages.DataPage;
+import com.library.pages.US005memoPage;
 import org.junit.jupiter.api.*;
 
 import java.sql.DriverManager;
@@ -30,8 +31,8 @@ public class DB {
             map.put(md.getColumnName(i), rs.getObject(i));
         }
         System.out.println(map);
-        Assertions.assertEquals(DataPage.createdName, map.get("full_name"));
-        Assertions.assertEquals(DataPage.createdmail, map.get("email"));
+        Assertions.assertEquals(US005memoPage.createdName, map.get("full_name"));
+        Assertions.assertEquals(US005memoPage.createdmail, map.get("email"));
     }
 
     @AfterEach
