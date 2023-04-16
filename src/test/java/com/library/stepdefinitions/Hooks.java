@@ -32,7 +32,6 @@ public class Hooks {
 	public void afterDbHook() {
 		System.out.println("closing database connection");
 		DBUtils.destroyConnection();
-
 	}
 	
 	@Before("@ui")

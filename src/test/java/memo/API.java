@@ -1,6 +1,7 @@
 package memo;
 
 import com.library.pages.DataPage;
+import com.library.utilities.ConfigurationReader;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
@@ -12,12 +13,12 @@ import static io.restassured.RestAssured.given;
 public class API {
     @Test
     void test01() {
-        baseURI = DataPage.urlApi;
+        baseURI = ConfigurationReader.getProperty( "baseUrl");
 
         DataPage.token = given().accept(ContentType.JSON)
                 .contentType("application/x-www-form-urlencoded")
-                .formParam("email", DataPage.librarin)
-                .formParam("password", DataPage.pass)
+                .formParam("email", ConfigurationReader.getProperty("librarian"))
+                .formParam("password", ConfigurationReader.getProperty("password"))
                 .post("/login").then().statusCode(200).extract().path("token");
     }
 
