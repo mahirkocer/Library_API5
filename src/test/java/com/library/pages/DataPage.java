@@ -19,9 +19,6 @@ public class DataPage {
 
     public  static  String urlApi = "http://library1.cydeo.com/rest/v1";
 
-    public static String createdName = "mylibDeleteme";
-    public  static String createdmail = "librarian111@library";
-
     public static String token;
 
 }
