@@ -29,4 +29,6 @@ public class US005memoPage {
     public static String createdName = "mylibDeleteme";
     public static String createdmail = "librarian111@library";
 
+    public static String query_getlastid = "select *\n" +
+            "from users order by id desc limit 1";
 }
