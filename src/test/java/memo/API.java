@@ -3,17 +3,17 @@ package memo;
 import com.library.pages.DataPage;
 import com.library.utilities.ConfigurationReader;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import org.junit.jupiter.api.Assertions;
+import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.stringContainsInOrder;
 
 public class API {
     @Test
     void test01() {
-        baseURI = ConfigurationReader.getProperty( "baseUrl");
+        baseURI = ConfigurationReader.getProperty("baseUrl");
 
         DataPage.token = given().accept(ContentType.JSON)
                 .contentType("application/x-www-form-urlencoded")
@@ -26,11 +26,19 @@ public class API {
 //jsonPath.getList("items.findAll {it.region_id==3}.country_name");
     @Test
     void test() {
-        Response response = given().header("x-library-token", DataPage.token)
-                .get("/get_user_by_id/10261");
-response.prettyPrint();
-        Assertions.assertEquals("mylibDeleteme", response.path("full_name"));
-        Assertions.assertEquals("librarian111@library", response.path("email"));
+        String bodytext = given().header("x-library-token", DataPage.token)
+                .get("/get_user_by_id/10261").body().asString();
+
+        MatcherAssert.assertThat(bodytext, stringContainsInOrder(
+                "full_name",
+                "email",
+                "password",
+                "user_group",
+                "status",
+                "start_date",
+                "end_date",
+                "address"
+        ));
     }
 }
 

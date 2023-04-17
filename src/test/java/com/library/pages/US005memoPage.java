@@ -26,9 +26,11 @@ public class US005memoPage {
     public WebElement fullnameField;
 
     public String email;
-    public static String createdName = "mylibDeleteme";
+    public static String addedName = "mylibDeleteme";
     public static String createdmail = "librarian111@library";
+    public static String addedId = "10261";
 
-    public static String query_getlastid = "select *\n" +
-            "from users order by id desc limit 1";
+    public static String query_getMylastAddedid = "select * from users order by id desc limit 1";
+
+    public static String query_user_groups = "select group_name from user_groups";
 }
