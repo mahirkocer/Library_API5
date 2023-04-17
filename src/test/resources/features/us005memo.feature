@@ -4,7 +4,7 @@ Feature: Add User Function US-005
   3-User Group should have 2 user types as Librarian and Students
   4-Status should have  ACTIVE and INACTIVE
 
-  Background: user logs into library page
+  Background:
     Given user is on home page
     Then user logs in as "librarian"
 
@@ -15,6 +15,11 @@ Feature: Add User Function US-005
     And user clicks save button
     Then user verifies added name is seen in DB
 
-  @api @wipi
-  Scenario: Verify "Add user" module should have all necessary parameters
+  @api
+  Scenario: Verify "Add user" module should have all necessary parameters (AC-2)
     Then user verifies added user has all params by checking API
+
+  @api @db
+  Scenario: Verify User Group should have 2 user types as Librarian and Students (AC-3)
+    Then user checks groups types from API
+    And user checks groups from DB
