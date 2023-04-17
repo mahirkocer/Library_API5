@@ -33,4 +33,7 @@ public class US005memoPage {
     public static String query_getMylastAddedid = "select * from users order by id desc limit 1";
 
     public static String query_user_groups = "select group_name from user_groups";
+
+    public static String query_user_status = "select distinct status from users";
+
 }
