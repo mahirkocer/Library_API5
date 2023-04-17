@@ -76,7 +76,6 @@ public class US005memoStepDefs extends US005memoPage {
 
         List<String> names = response.path("name");
         MatcherAssert.assertThat(names, hasItems("Librarian", "Students"));
-
     }
 
     @And("user checks groups from DB")
@@ -86,6 +85,14 @@ public class US005memoStepDefs extends US005memoPage {
         MatcherAssert.assertThat(user_groups.toString(), allOf(
                 containsString("Student"),
                 containsString("Librarian")));
+    }
+
+    @Then("user check status codes from DB")
+    public void userCheckStatusCodesFromAPI() {
+        List<Object> singleColumn = DBUtils.getSingleColumn(US005memoPage.query_user_status);
+
+        MatcherAssert.assertThat(singleColumn,hasItems("ACTIVE","INACTIVE"));
+
     }
 
 }
