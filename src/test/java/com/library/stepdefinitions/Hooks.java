@@ -1,6 +1,5 @@
 package com.library.stepdefinitions;
 
-import com.library.pages.DataPage;
 import com.library.utilities.ConfigurationReader;
 import com.library.utilities.DBUtils;
 import com.library.utilities.Driver;
@@ -11,18 +10,16 @@ import io.restassured.http.ContentType;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
-import java.util.concurrent.TimeUnit;
-
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 
-
 public class Hooks {
+    public static String token;
 
     @Before("@api")
     public static void baseURI() {
         baseURI = ConfigurationReader.getProperty("baseUrl");
-        DataPage.token = given().accept(ContentType.JSON)
+        token = given().accept(ContentType.JSON)
                 .contentType("application/x-www-form-urlencoded")
                 .formParam("email", ConfigurationReader.getProperty("librarian"))
                 .formParam("password", ConfigurationReader.getProperty("password"))
@@ -44,7 +41,7 @@ public class Hooks {
     @Before("@ui")
     public void setUp() {
         // we put a logic that should apply to every scenario
-    //    Driver.getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        //    Driver.getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
     }
 
@@ -56,7 +53,7 @@ public class Hooks {
             final byte[] screenshot = ((TakesScreenshot) Driver.getDriver()).getScreenshotAs(OutputType.BYTES);
             scenario.attach(screenshot, "image/png", scenario.getName());
         }
-        //Driver.closeDriver();
+        Driver.closeDriver();
     }
 
 

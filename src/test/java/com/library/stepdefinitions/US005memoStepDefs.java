@@ -1,6 +1,5 @@
 package com.library.stepdefinitions;
 
-import com.library.pages.DataPage;
 import com.library.pages.US005memoPage;
 import com.library.utilities.BrowserUtils;
 import com.library.utilities.DBUtils;
@@ -50,7 +49,7 @@ public class US005memoStepDefs extends US005memoPage {
     @Then("user verifies added user has all params by checking API")
     public void user_Verifies_Added_User_Has_All_Params_By_Checking_API() {
 
-        Response response = given().header("x-library-token", DataPage.token)
+        Response response = given().header("x-library-token", Hooks.token)
                 .pathParam("id", addedId)
                 .get("/get_user_by_id/{id}");
 
@@ -72,7 +71,7 @@ public class US005memoStepDefs extends US005memoPage {
     @Then("user checks groups types from API")
     public void user_Checks_Groups_From_Api() {
 
-        Response response = given().header("x-library-token", DataPage.token)
+        Response response = given().header("x-library-token", Hooks.token)
                 .get("/get_user_groups");
 
         List<String> names = response.path("name");
