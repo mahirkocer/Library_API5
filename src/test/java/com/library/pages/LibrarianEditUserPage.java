@@ -76,10 +76,10 @@ public class LibrarianEditUserPage {
         fullNameInput.sendKeys(fullName);
         emailInput.sendKeys(email);
         passwordInput.sendKeys(faker.bothify("########??"));
-        Select userGroup = new Select(userGroupSelect);
-        userGroup.selectByIndex(0);
-        Select status = new Select(statusSelect);
-        status.selectByIndex(0);
+//        Select userGroup = new Select(userGroupSelect);
+//        userGroup.selectByIndex(1);
+//        Select status = new Select(statusSelect);
+//        status.selectByIndex(1);
         startDateInput.sendKeys("2019-01-12");
 
         endDateInput.sendKeys("2023-05-30");
