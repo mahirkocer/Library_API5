@@ -12,7 +12,7 @@ Feature: Barrow Book Function US-007
     Given user is on home page
     And user logs in as "student"
 
-  @wip
+  @barrow_book
   Scenario: Verify that user can borrow books in books page
     When users click the books menu
     And users enters book "Diceros bicornis" into seacrh box
