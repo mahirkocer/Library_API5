@@ -22,7 +22,7 @@ public class Books_BarrowPage {
     @FindBy(id = "toast-container")
     public WebElement successMessage;
 
-    @FindBy(xpath = "(//td[.='Diceros bicornis']/preceding-sibling::td[1])[2]")
+    @FindBy(xpath = "(//td//a)[last()]")
     public WebElement unBarrowBtn;
 
     @FindBy(xpath = "//*[@id=\"menu_item\"]/li[2]/a/span[1]")

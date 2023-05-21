@@ -19,21 +19,22 @@ public class BorrowBook_StepDefs {
 
     @When("users click the books menu")
     public void users_click_the_books_menu() {
-        BrowserUtils.waitForClickablility(booksBarrowPage.booksBtn,10);
+        BrowserUtils.waitForClickablility(booksBarrowPage.booksBtn, 10);
         booksBarrowPage.booksBtn.click();
     }
 
     @Then("success message is displayed")
-    public void success_message_is_displayed() {
+    public void success_message_is_displayed() throws InterruptedException {
         BrowserUtils.waitForVisibility(booksBarrowPage.successMessage, 10);
         Assert.assertTrue(booksBarrowPage.successMessage.isDisplayed());
         Assert.assertEquals("The book has been borrowed...", booksBarrowPage.successMessage.getText());
 
         booksBarrowPage.BarrowedBoooks.click();
+        Thread.sleep(4000);
 
         JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
-        js.executeScript("window.scrollBy(0,1000)");
-
+        js.executeScript("arguments[0].scrollIntoView(true)",booksBarrowPage.unBarrowBtn);
+        Thread.sleep(4000);
         booksBarrowPage.unBarrowBtn.click();
 
     }
@@ -51,7 +52,7 @@ public class BorrowBook_StepDefs {
 
     @And("users enters book {string} into seacrh box")
     public void usersEntersBookIntoSeacrhBox(String bookName) {
-            booksBarrowPage.searchBox.sendKeys(bookName);
-        }
+        booksBarrowPage.searchBox.sendKeys(bookName);
     }
+}
 
