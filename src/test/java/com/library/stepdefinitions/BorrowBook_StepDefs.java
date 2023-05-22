@@ -28,6 +28,7 @@ import static javax.swing.UIManager.getInt;
 public class BorrowBook_StepDefs {
     WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(5));
     Books_BarrowPage booksBarrowPage = new Books_BarrowPage();
+    int book_borrow_id;
 
     public static String token;
 
@@ -87,13 +88,23 @@ public class BorrowBook_StepDefs {
             .extract().jsonPath();
     String mesAct ="The book has been borrowed...";
     String message = jsonPath.getString("message");
-    int book_borrow_id = jsonPath.getInt("book_borrow_id");
+    book_borrow_id = jsonPath.getInt("book_borrow_id");
     Assertions.assertEquals(mesAct,message);
 
     }
 
     @And("get barrowed book list")
     public void getBarrowedBookList() {
+
+        given().header("x-library-token", token).pathParam("id", 10053)
+                .when().get("/get_borrowed_books_by_user/{id}")
+                .then()
+                .statusCode(200)
+                .body("book_id",Matchers.contains("1073"))
+                ;
+
+
+
     }
 }
 
