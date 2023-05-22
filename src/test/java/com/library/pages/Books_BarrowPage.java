@@ -16,10 +16,16 @@ public class Books_BarrowPage {
     @FindBy(xpath = "//input[@type='search']")
     public WebElement searchBox;
 
-    @FindBy(xpath = "//td/a")
+    @FindBy(xpath = "//td[.='Diceros bicornis']/preceding-sibling::td[2]")
     public WebElement borrowBook;
 
     @FindBy(id = "toast-container")
     public WebElement successMessage;
+
+    @FindBy(xpath = "(//td//a)[last()]")
+    public WebElement unBarrowBtn;
+
+    @FindBy(xpath = "//*[@id=\"menu_item\"]/li[2]/a/span[1]")
+    public WebElement BarrowedBoooks;
 
 }
