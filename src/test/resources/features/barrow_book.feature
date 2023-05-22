@@ -8,9 +8,9 @@ Feature: Barrow Book Function US-007
   6-Student can use show records dropdown for getting number of entries depends the dropdown options.
   7-Student can find book by using search box with book's Name and Author.
 
-  Background:
-    Given user is on home page
-    And user logs in as "student"
+#  Background:
+#    Given user is on home page
+#    And user logs in as "student"
 
   @barrow_book
   Scenario: Verify that user can borrow books in books page
@@ -19,6 +19,8 @@ Feature: Barrow Book Function US-007
     And user click the Barrow Book button
     Then success message is displayed
 
-
-
+@barrowBook
+Scenario:
+  When  user can barrow a book
+  And get barrowed book list
 
