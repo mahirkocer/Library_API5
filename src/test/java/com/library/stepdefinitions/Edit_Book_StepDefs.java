@@ -15,8 +15,11 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Edit_Book_StepDefs {
@@ -80,7 +83,7 @@ public class Edit_Book_StepDefs {
     @Then("status code should be {int}")
     public void statusCodeShouldBe(int arg0) {
 
-        Assertions.assertEquals(response.statusCode(),arg0);
+        Assertions.assertEquals(arg0,response.statusCode());
     }
 
     @And("I shoul see {string} message in response body")
@@ -110,4 +113,25 @@ given().accept(ContentType.JSON)
     }
 
 
+    @When("I send POST request to {string} with following information")
+    public void iSendPOSTRequestToWithFollowingInformation(String endPoint,Map<String,Object> newBook) {
+       response = given().accept(ContentType.JSON)
+               .header("x-library-token", Hooks.token)
+                .formParams(newBook)
+                .when().post(endPoint);
+
+
+    }
+
+    @Then("User should see following parameters")
+    public void userShouldSeeFollowingParameters(List<String> editParameters) {
+        List<String> param=new ArrayList<>();
+        for (WebElement parameter : bookEditPage.parameters) {
+            param.add(parameter.getText());
+        }
+Assertions.assertEquals(editParameters,param);
+
+
+
+    }
 }
