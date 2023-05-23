@@ -11,11 +11,13 @@ import io.cucumber.java.en.When;
 import static io.restassured.RestAssured.*;
 
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -133,5 +135,54 @@ Assertions.assertEquals(editParameters,param);
 
 
 
+    }
+
+    @Then("User should verify that Following categories present")
+    public void userShouldVerifyThatFollowingCategoriesPresent(List<String> bookCathagories) {
+        Select select=new Select(bookEditPage.bookCathagories);
+        List<String> param=new ArrayList<>();
+        List<WebElement> options = select.getOptions();
+        for (WebElement option : options) {
+            param.add(option.getText());
+        }
+        Assertions.assertEquals(bookCathagories,param);
+
+
+    }
+
+    @When("I send to request {string} endpoint")
+    public void iSendToRequestEndpoint(String arg0 ) {
+
+       response = given().accept(ContentType.JSON)
+                .header("x-library-token", Hooks.token)
+                .when().get(arg0);
+
+
+
+    }
+
+    @Then("I should verify that Following categories present")
+    public void iShouldVerifyThatFollowingCategoriesPresent(List<String> list) {
+        JsonPath jsonPath = response.jsonPath();
+        Assertions.assertEquals(list, jsonPath.getList("name"));
+
+    }
+
+    @Then("user should only see all classic books")
+    public void userShouldSeeAllClassaicBooks() {
+        for (int i = 0; i < bookEditPage.pageNumber.size(); i++) {
+            for (WebElement element : bookEditPage.bookCathegoriName) {
+                Assertions.assertEquals(element.getText(),"Classic");
+            }
+            bookEditPage.nextButton.click();
+        }
+
+    }
+
+    @And("user select {string} category")
+    public void userSelectCategory(String arg0) {
+
+        Select select=new Select(bookEditPage.bookCathagories);
+        select.selectByVisibleText("Classic");
     }
 }

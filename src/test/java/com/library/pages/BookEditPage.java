@@ -33,5 +33,13 @@ public class BookEditPage extends BasePage{
 @FindBy(xpath = "//label[@class='control-label']")
     public List<WebElement> parameters;
 
+@FindBy(id = "book_categories")
+    public WebElement bookCathagories;
+@FindBy(xpath = "//tbody/tr/td[5]")
+    public List<WebElement> bookCathegoriName;
+@FindBy(xpath = "//a[@class='page-link']")
+    public List<WebElement> pageNumber;
+@FindBy(xpath = "//a[@title='Next']")
+    public WebElement nextButton;
 
 }

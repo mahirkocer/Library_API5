@@ -43,4 +43,55 @@ Feature: As a librarian I should be able to edit books
       | Author        |
       | Book Category |
       | Description   |
-
+Scenario: Verify that Following categories should be present
+  When user click books
+ Then User should verify that Following categories present
+   | ALL                     |
+   | Action and Adventure    |
+   | Anthology               |
+   | Classic                 |
+   | Comic and Graphic Novel |
+   | Crime and Detective     |
+   | Drama                   |
+   | Fable                   |
+   | Fairy Tale              |
+   | Fan-Fiction             |
+   | Fantasy                 |
+   | Historical Fiction      |
+   | Horror                  |
+   | Science Fiction         |
+   | Biography/Autobiography |
+   | Humor                   |
+   | Romance                 |
+   | Short Story             |
+   | Essay                   |
+   | Memoir                  |
+   | Poetry                  |
+  @api
+Scenario: erify that Following categories should be present
+  When I send to request "/get_book_categories" endpoint
+  Then I should verify that Following categories present
+    | Action and Adventure    |
+    | Anthology               |
+    | Classic                 |
+    | Comic and Graphic Novel |
+    | Crime and Detective     |
+    | Drama                   |
+    | Fable                   |
+    | Fairy Tale              |
+    | Fan-Fiction             |
+    | Fantasy                 |
+    | Historical Fiction      |
+    | Horror                  |
+    | Science Fiction         |
+    | Biography/Autobiography |
+    | Humor                   |
+    | Romance                 |
+    | Short Story             |
+    | Essay                   |
+    | Memoir                  |
+    | Poetry                  |
+    Scenario: Librarian can select related category to see all books in that category by using book categories dropdown.
+      When user click books
+      And user select "Classic" category
+      Then user should only see all classic books
