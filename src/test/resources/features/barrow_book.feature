@@ -19,8 +19,6 @@ Feature: Barrow Book Function US-007
     And user click the Barrow Book button
     Then success message is displayed
 
-@barrowBook
-Scenario:
-  When  user can barrow a book
-  And get barrowed book list
-
+  @barrowBook
+  Scenario:
+    When  user can barrow a book
