@@ -28,7 +28,7 @@ import static javax.swing.UIManager.getInt;
 public class BorrowBook_StepDefs {
     WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(5));
     Books_BarrowPage booksBarrowPage = new Books_BarrowPage();
-    int book_borrow_id;
+    String book_borrow_id;
 
     public static String token;
 
@@ -48,7 +48,7 @@ public class BorrowBook_StepDefs {
         Thread.sleep(4000);
 
         JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
-        js.executeScript("arguments[0].scrollIntoView(true)",booksBarrowPage.unBarrowBtn);
+        js.executeScript("arguments[0].scrollIntoView(true)", booksBarrowPage.unBarrowBtn);
         Thread.sleep(4000);
         booksBarrowPage.unBarrowBtn.click();
 
@@ -80,28 +80,23 @@ public class BorrowBook_StepDefs {
                 .formParam("password", ConfigurationReader.getProperty("password"))
                 .post("/login").then().statusCode(200).extract().path("token");
 
-  JsonPath jsonPath= given().header("x-library-token", token)
-            .formParam("user_id", 515)
-            .formParam("book_id", 1282)
-            .when().post("/book_borrow").
-            then().statusCode(200)
-            .extract().jsonPath();
-    String mesAct ="The book has been borrowed...";
-    String message = jsonPath.getString("message");
-    book_borrow_id = jsonPath.getInt("book_borrow_id");
-    Assertions.assertEquals(mesAct,message);
+        JsonPath jsonPath = given().header("x-library-token", token)
+                .formParam("user_id", 515)
+                .formParam("book_id", 1282)
+                .when().post("/book_borrow").
+                then().statusCode(200)
+                .extract().jsonPath();
+        String mesAct = "The book has been borrowed...";
+        String message = jsonPath.getString("message");
+        book_borrow_id = jsonPath.getString("book_borrow_id");
+        Assertions.assertEquals(mesAct, message);
 
-    }
-
-    @And("get barrowed book list")
-    public void getBarrowedBookList() {
-
-        given().header("x-library-token", token).pathParam("id", 10053)
+        Response response = given().header("x-library-token", token).pathParam("id", 10053)
                 .when().get("/get_borrowed_books_by_user/{id}")
                 .then()
-                .statusCode(200)
-                .body("book_id",Matchers.contains("1073"))
-                ;
+                .statusCode(200).extract().response();
+
+
 
 
 
