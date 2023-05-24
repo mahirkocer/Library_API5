@@ -14,7 +14,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.json.Json;
+import static org.hamcrest.Matchers.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -111,22 +111,39 @@ public class BorrowBook_StepDefs {
 
 
     Map<String,Object> body = new HashMap<>();
-        body.put("name", "Erinaceus frontalis");
+        body.put("name", "mahir");
         body.put("isbn", "387122995826");
         body.put("year", "1995");
-        body.put("author", "Hetty Testo");
+        body.put("author", "mahsi keder");
         body.put("book_category_id", "5");
         body.put( "description", null);
 
 
-        int id = given().accept(ContentType.JSON).header("x-library-token", token)
+        int id = given().header("x-library-token", token)
                 .contentType("application/json")
                 .body(body)
-                .when().post("/add_book")
+                .when().post("/add_book").prettyPeek()
                 .then()
-                .statusCode(201).extract().jsonPath().getInt("id");
+                .statusCode(200)
+               .body("message", is("The book has been created."))
+                .extract() .jsonPath().getInt("book_id");
 
         System.out.println("id = " + id);
+
+
+        given().header("x-library-token", token)
+                .pathParam("id",id)
+                .when().get("/get_book_by_id/{id}").prettyPeek()
+                .then().statusCode(200)
+                .body("name",is("mahir"))
+                .body("author",is("mahsi keder"));
+
+
+
+
+
+
+
 
 
     }
