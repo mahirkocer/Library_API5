@@ -7,19 +7,25 @@ import com.library.utilities.Driver;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+
+import static org.hamcrest.Matchers.*;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
@@ -69,7 +75,8 @@ public class BorrowBook_StepDefs {
     public void usersEntersBookIntoSeacrhBox(String bookName) {
         booksBarrowPage.searchBox.sendKeys(bookName);
     }
-@Test
+
+    @Test
     @When("user can barrow a book")
     public void userCanBarrowABook() {
 
@@ -96,8 +103,83 @@ public class BorrowBook_StepDefs {
                 .then()
                 .statusCode(200).extract().response();
 
+    }
+
+    @Test
+    @Then("verify response")
+    public void verifyResponse() {
+
+        baseURI = ConfigurationReader.getProperty("baseUrl");
+        token = given().accept(ContentType.JSON)
+                .contentType("application/x-www-form-urlencoded")
+                .formParam("email", ConfigurationReader.getProperty("librarian"))
+                .formParam("password", ConfigurationReader.getProperty("password"))
+                .post("/login").then().statusCode(200).extract().path("token");
 
 
+        Map<String, Object> body = new HashMap<>();
+        body.put("name", "mahir");
+        body.put("isbn", "387122995826");
+        body.put("year", "1995");
+        body.put("author", "mahsi keder");
+        body.put("book_category_id", "5");
+        body.put("description", null);
+
+
+        int id = given().header("x-library-token", token)
+                .contentType("application/json")
+                .body(body)
+                .when().post("/add_book").prettyPeek()
+                .then()
+                .statusCode(200)
+                .body("message", is("The book has been created."))
+                .extract().jsonPath().getInt("book_id");
+
+        System.out.println("id = " + id);
+
+
+        given().header("x-library-token", token)
+                .pathParam("id", id)
+                .when().get("/get_book_by_id/{id}").prettyPeek()
+                .then().statusCode(200)
+                .body("name", is("mahir"))
+                .body("author", is("mahsi keder"));
+
+
+    }
+
+    @When("user login as a librarian to api")
+    public void userLoginAsALibrarianToApi() {
+    }
+
+    @And("user send a request to create a book")
+    public void userSendARequestToCreateABook() {
+    }
+
+    @When("user navigate to the page")
+    public void userNavigateToThePage() {
+        Driver.getDriver().get("https://demoqa.com/frames");
+
+
+    }
+
+    @Then("verify teext")
+    public void verifyTeext() {
+        Driver.getDriver().switchTo().frame(0);
+        WebElement sampleHeading = Driver.getDriver().findElement(By.id("sampleHeading"));
+        System.out.println("sampleHeading.getText() = " + sampleHeading.getText());
+        Driver.getDriver().switchTo().parentFrame();
+
+
+    }
+
+    @Then("switch the inner iframe")
+    public void switchTheInnerIframe() {
+        Driver.getDriver().switchTo().frame("frame2");
+        //WebElement frane2 = Driver.getDriver().findElement(By.id("frame2Wrapper"));
+        //  Driver.getDriver().switchTo().frame(frane2);
+        WebElement sampleHeading = Driver.getDriver().findElement(By.id("sampleHeading"));
+        System.out.println("sampleHeading.getText() = " + sampleHeading.getText());
 
 
     }
