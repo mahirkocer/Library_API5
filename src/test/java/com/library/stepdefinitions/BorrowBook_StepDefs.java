@@ -15,8 +15,10 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+
 import static org.hamcrest.Matchers.*;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -73,7 +75,8 @@ public class BorrowBook_StepDefs {
     public void usersEntersBookIntoSeacrhBox(String bookName) {
         booksBarrowPage.searchBox.sendKeys(bookName);
     }
-@Test
+
+    @Test
     @When("user can barrow a book")
     public void userCanBarrowABook() {
 
@@ -101,25 +104,26 @@ public class BorrowBook_StepDefs {
                 .statusCode(200).extract().response();
 
     }
-@Test
+
+    @Test
     @Then("verify response")
     public void verifyResponse() {
 
-    baseURI = ConfigurationReader.getProperty("baseUrl");
-    token = given().accept(ContentType.JSON)
-            .contentType("application/x-www-form-urlencoded")
-            .formParam("email", ConfigurationReader.getProperty("librarian"))
-            .formParam("password", ConfigurationReader.getProperty("password"))
-            .post("/login").then().statusCode(200).extract().path("token");
+        baseURI = ConfigurationReader.getProperty("baseUrl");
+        token = given().accept(ContentType.JSON)
+                .contentType("application/x-www-form-urlencoded")
+                .formParam("email", ConfigurationReader.getProperty("librarian"))
+                .formParam("password", ConfigurationReader.getProperty("password"))
+                .post("/login").then().statusCode(200).extract().path("token");
 
 
-    Map<String,Object> body = new HashMap<>();
+        Map<String, Object> body = new HashMap<>();
         body.put("name", "mahir");
         body.put("isbn", "387122995826");
         body.put("year", "1995");
         body.put("author", "mahsi keder");
         body.put("book_category_id", "5");
-        body.put( "description", null);
+        body.put("description", null);
 
 
         int id = given().header("x-library-token", token)
@@ -128,25 +132,18 @@ public class BorrowBook_StepDefs {
                 .when().post("/add_book").prettyPeek()
                 .then()
                 .statusCode(200)
-               .body("message", is("The book has been created."))
-                .extract() .jsonPath().getInt("book_id");
+                .body("message", is("The book has been created."))
+                .extract().jsonPath().getInt("book_id");
 
         System.out.println("id = " + id);
 
 
         given().header("x-library-token", token)
-                .pathParam("id",id)
+                .pathParam("id", id)
                 .when().get("/get_book_by_id/{id}").prettyPeek()
                 .then().statusCode(200)
-                .body("name",is("mahir"))
-                .body("author",is("mahsi keder"));
-
-
-
-
-
-
-
+                .body("name", is("mahir"))
+                .body("author", is("mahsi keder"));
 
 
     }
@@ -169,6 +166,18 @@ public class BorrowBook_StepDefs {
     @Then("verify teext")
     public void verifyTeext() {
         Driver.getDriver().switchTo().frame("frame1");
+        WebElement sampleHeading = Driver.getDriver().findElement(By.id("sampleHeading"));
+        System.out.println("sampleHeading.getText() = " + sampleHeading.getText());
+        Driver.getDriver().switchTo().defaultContent();
+
+
+    }
+
+    @Then("switch the inner iframe")
+    public void switchTheInnerIframe() {
+        Driver.getDriver().switchTo().frame("frame2");
+        //WebElement frane2 = Driver.getDriver().findElement(By.id("frame2Wrapper"));
+        //  Driver.getDriver().switchTo().frame(frane2);
         WebElement sampleHeading = Driver.getDriver().findElement(By.id("sampleHeading"));
         System.out.println("sampleHeading.getText() = " + sampleHeading.getText());
 
