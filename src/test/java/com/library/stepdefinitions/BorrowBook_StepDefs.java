@@ -7,19 +7,20 @@ import com.library.utilities.Driver;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.json.Json;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
@@ -96,8 +97,36 @@ public class BorrowBook_StepDefs {
                 .then()
                 .statusCode(200).extract().response();
 
+    }
+@Test
+    @Then("verify response")
+    public void verifyResponse() {
+
+    baseURI = ConfigurationReader.getProperty("baseUrl");
+    token = given().accept(ContentType.JSON)
+            .contentType("application/x-www-form-urlencoded")
+            .formParam("email", ConfigurationReader.getProperty("librarian"))
+            .formParam("password", ConfigurationReader.getProperty("password"))
+            .post("/login").then().statusCode(200).extract().path("token");
 
 
+    Map<String,Object> body = new HashMap<>();
+        body.put("name", "Erinaceus frontalis");
+        body.put("isbn", "387122995826");
+        body.put("year", "1995");
+        body.put("author", "Hetty Testo");
+        body.put("book_category_id", "5");
+        body.put( "description", null);
+
+
+        int id = given().accept(ContentType.JSON).header("x-library-token", token)
+                .contentType("application/json")
+                .body(body)
+                .when().post("/add_book")
+                .then()
+                .statusCode(201).extract().jsonPath().getInt("id");
+
+        System.out.println("id = " + id);
 
 
     }

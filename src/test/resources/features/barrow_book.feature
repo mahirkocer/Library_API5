@@ -22,3 +22,12 @@ Feature: Barrow Book Function US-007
   @barrowBook
   Scenario:
     When  user can barrow a book
+
+    @AddBook @api
+      Scenario: Librarian can create a book
+      When user login as a librarian to api
+      And user send a request to create a book
+      Then verify response
+
+
+
