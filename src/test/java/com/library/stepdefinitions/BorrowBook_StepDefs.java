@@ -13,8 +13,11 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import static org.hamcrest.Matchers.*;
+
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -144,6 +147,30 @@ public class BorrowBook_StepDefs {
 
 
 
+
+
+    }
+
+    @When("user login as a librarian to api")
+    public void userLoginAsALibrarianToApi() {
+    }
+
+    @And("user send a request to create a book")
+    public void userSendARequestToCreateABook() {
+    }
+
+    @When("user navigate to the page")
+    public void userNavigateToThePage() {
+        Driver.getDriver().get("https://demoqa.com/frames");
+
+
+    }
+
+    @Then("verify teext")
+    public void verifyTeext() {
+        Driver.getDriver().switchTo().frame("frame1");
+        WebElement sampleHeading = Driver.getDriver().findElement(By.id("sampleHeading"));
+        System.out.println("sampleHeading.getText() = " + sampleHeading.getText());
 
 
     }

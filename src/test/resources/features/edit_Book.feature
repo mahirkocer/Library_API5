@@ -12,5 +12,5 @@ Feature: As a librarian I should be able to edit books
     Then user can see sucsecfuly saved massage
     Scenario:Verify that Librarian can add new books
       When send a get request "/add_book"
-      And
+
 

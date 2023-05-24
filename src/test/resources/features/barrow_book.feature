@@ -23,11 +23,17 @@ Feature: Barrow Book Function US-007
   Scenario:
     When  user can barrow a book
 
-    @AddBook @api
-      Scenario: Librarian can create a book
-      When user login as a librarian to api
-      And user send a request to create a book
-      Then verify response
+  @AddBook @api
+  Scenario: Librarian can create a book
+    When user login as a librarian to api
+    And user send a request to create a book
+    Then verify response
+
+  @iframe
+  Scenario: Iframes
+    When user navigate to the page
+    Then verify teext
+    Then switch the inner iframe
 
 
 
