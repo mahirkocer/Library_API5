@@ -165,10 +165,10 @@ public class BorrowBook_StepDefs {
 
     @Then("verify teext")
     public void verifyTeext() {
-        Driver.getDriver().switchTo().frame("frame1");
+        Driver.getDriver().switchTo().frame(0);
         WebElement sampleHeading = Driver.getDriver().findElement(By.id("sampleHeading"));
         System.out.println("sampleHeading.getText() = " + sampleHeading.getText());
-        Driver.getDriver().switchTo().defaultContent();
+        Driver.getDriver().switchTo().parentFrame();
 
 
     }
