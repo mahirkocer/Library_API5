@@ -35,5 +35,8 @@ Feature: Barrow Book Function US-007
     Then verify teext
     Then switch the inner iframe
 
+    @database
+    When user creates a connection and get all user
+
 
 

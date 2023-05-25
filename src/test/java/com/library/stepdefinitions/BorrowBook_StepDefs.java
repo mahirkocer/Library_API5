@@ -183,5 +183,9 @@ public class BorrowBook_StepDefs {
 
 
     }
+
+    @When("user creates a connection and get all user")
+    public void userCreatesAConnectionAndGetAllUser() {
+    }
 }
 
