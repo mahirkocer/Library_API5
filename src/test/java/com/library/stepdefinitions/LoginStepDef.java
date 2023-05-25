@@ -20,6 +20,6 @@ public class LoginStepDef extends LoginPage {
         emailInput.sendKeys(ConfigurationReader.getProperty(user));
         passwordInput.sendKeys(ConfigurationReader.getProperty("password"));
         signInButton.click();
-        Thread.sleep(3000);
+   BrowserUtils.waitFor(3);
     }
 }

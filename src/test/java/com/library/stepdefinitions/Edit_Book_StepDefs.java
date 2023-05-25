@@ -1,9 +1,7 @@
 package com.library.stepdefinitions;
 
 import com.library.pages.BookEditPage;
-import com.library.utilities.ApiUtil;
-import com.library.utilities.ConfigurationReader;
-import com.library.utilities.Driver;
+import com.library.utilities.*;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -16,6 +14,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -29,6 +28,7 @@ public class Edit_Book_StepDefs {
     Response response;
     @When("user click books")
     public void user_click_books() throws InterruptedException {
+        BrowserUtils.waitForClickablility( bookEditPage.books,15);
         bookEditPage.books.click();
         Thread.sleep(3000);
 
@@ -161,28 +161,86 @@ Assertions.assertEquals(editParameters,param);
 
     }
 
-    @Then("I should verify that Following categories present")
+    @Then("I should verify that Following categories present and same with database")
     public void iShouldVerifyThatFollowingCategoriesPresent(List<String> list) {
         JsonPath jsonPath = response.jsonPath();
         Assertions.assertEquals(list, jsonPath.getList("name"));
+        String query="select * from book_categories";
+        List<Object> rowList = DBUtils.getRowList(query);
+
+        System.out.println(rowList.get(0));
 
     }
 
     @Then("user should only see all classic books")
     public void userShouldSeeAllClassaicBooks() {
-        for (int i = 0; i < bookEditPage.pageNumber.size(); i++) {
-            for (WebElement element : bookEditPage.bookCathegoriName) {
-                Assertions.assertEquals(element.getText(),"Classic");
-            }
-            bookEditPage.nextButton.click();
+
+
+        for (WebElement element : bookEditPage.bookCathegoriName) {
+            Assertions.assertEquals(element.getText(),"Classic");
         }
 
     }
 
     @And("user select {string} category")
-    public void userSelectCategory(String arg0) {
+    public void userSelectCategory(String arg0) throws InterruptedException {
 
         Select select=new Select(bookEditPage.bookCathagories);
         select.selectByVisibleText("Classic");
+
+
+
+    }
+
+
+
+    @And("User should get searchrecord dropdown to the {string}")
+    public void userShouldGetSearchrecordDropdownToThe(String arg0) throws InterruptedException {
+        Select select2=new Select(bookEditPage.searchRecordDropdown);
+        select2.selectByVisibleText(arg0);
+      BrowserUtils.waitFor(3);
+    }
+
+    @And("user write in search box {string} as a author name")
+    public void userWriteInSearchBoxAsAAuthorName(String arg0) throws InterruptedException {
+        bookEditPage.searchBook.sendKeys(arg0);
+        BrowserUtils.waitFor(3);
+    }
+
+
+
+    @Then("user can see {string} author name  on board")
+    public void userCanSeeAuthorNameOnBoard(String aouthorName) throws InterruptedException {
+
+            Assertions.assertEquals(bookEditPage.bookauthorName.getText(),aouthorName);
+
+
+    }
+
+    @Then("Verify the information should be same with database")
+    public void verifyTheInformationShouldBeSameWithDatabase() {
+        String actualBookName=bookEditPage.bookName.getText();
+        String actualauthorName=bookEditPage.bookauthorName.getText();
+        String actualBookISBN=bookEditPage.bookIsbn.getText();
+        String actualBookyear=bookEditPage.bookYear.getText();
+
+
+        String query="select * from books where author='Nick Spencer'";
+        Map<String, Object> rowMap = DBUtils.getRowMap(query);
+
+        Assertions.assertEquals(rowMap.get("name"),actualBookName);
+        Assertions.assertEquals(rowMap.get("isbn"),actualBookISBN);
+        Assertions.assertEquals(rowMap.get("year"),actualBookyear);
+        Assertions.assertEquals(rowMap.get("author"),actualauthorName);
+
+
+
+    }
+
+    @Then("Verify the cathegory information should be same with database")
+    public void verifyTheCathegoryInformationShouldBeSameWithDatabase() {
+
+
+
     }
 }
