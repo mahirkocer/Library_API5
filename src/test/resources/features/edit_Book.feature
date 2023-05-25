@@ -91,7 +91,12 @@ Scenario: erify that Following categories should be present
     | Essay                   |
     | Memoir                  |
     | Poetry                  |
-    Scenario: Librarian can select related category to see all books in that category by using book categories dropdown.
+    Scenario:Verify taht Librarian can select related category to see all books in that category by using book categories dropdown.
       When user click books
+      And User should get searchrecord dropdown to the "500"
       And user select "Classic" category
       Then user should only see all classic books
+Scenario: Verify taht Librarian can find book by using search box with  Author Name.
+  When user click books
+  And user write in search box "Nick Spencer" as a author name
+Then  user can see "Nick Spencer" author name  on board

@@ -41,5 +41,10 @@ public class BookEditPage extends BasePage{
     public List<WebElement> pageNumber;
 @FindBy(xpath = "//a[@title='Next']")
     public WebElement nextButton;
-
+@FindBy(xpath = "//select[@name='tbl_books_length']")
+    public WebElement searchRecordDropdown;
+@FindBy(xpath = "//input[@type='search']")
+    public WebElement searchBook;
+    @FindBy(xpath = "//tbody/tr//td[4]")
+    public List<WebElement> aouthorName;
 }

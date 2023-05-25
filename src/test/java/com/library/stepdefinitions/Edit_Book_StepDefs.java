@@ -16,6 +16,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -170,19 +171,46 @@ Assertions.assertEquals(editParameters,param);
 
     @Then("user should only see all classic books")
     public void userShouldSeeAllClassaicBooks() {
-        for (int i = 0; i < bookEditPage.pageNumber.size(); i++) {
-            for (WebElement element : bookEditPage.bookCathegoriName) {
-                Assertions.assertEquals(element.getText(),"Classic");
-            }
-            bookEditPage.nextButton.click();
+
+
+        for (WebElement element : bookEditPage.bookCathegoriName) {
+            Assertions.assertEquals(element.getText(),"Classic");
         }
 
     }
 
     @And("user select {string} category")
-    public void userSelectCategory(String arg0) {
+    public void userSelectCategory(String arg0) throws InterruptedException {
 
         Select select=new Select(bookEditPage.bookCathagories);
         select.selectByVisibleText("Classic");
+
+
+
+    }
+
+
+
+    @And("User should get searchrecord dropdown to the {string}")
+    public void userShouldGetSearchrecordDropdownToThe(String arg0) throws InterruptedException {
+        Select select2=new Select(bookEditPage.searchRecordDropdown);
+        select2.selectByVisibleText(arg0);
+        Thread.sleep(3000);
+    }
+
+    @And("user write in search box {string} as a author name")
+    public void userWriteInSearchBoxAsAAuthorName(String arg0) throws InterruptedException {
+        bookEditPage.searchBook.sendKeys(arg0);
+        Thread.sleep(3000);
+    }
+
+
+
+    @Then("user can see {string} author name  on board")
+    public void userCanSeeAuthorNameOnBoard(String aouthorName) throws InterruptedException {
+        for (WebElement element : bookEditPage.aouthorName) {
+            Assertions.assertEquals(element.getText(),aouthorName);
+
+        }
     }
 }
