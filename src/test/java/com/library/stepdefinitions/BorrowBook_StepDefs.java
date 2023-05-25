@@ -190,11 +190,16 @@ public class BorrowBook_StepDefs {
 
         Connection connection = DriverManager.getConnection(ConfigurationReader.getProperty("dbUrl"),ConfigurationReader.getProperty("dbUsername"),ConfigurationReader.getProperty("dbPassword"));
         Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-        ResultSet resultSet = statement.executeQuery("select full_name from users;");
+        ResultSet resultSet = statement.executeQuery("select full_name,email from users;");
 
         resultSet.next();
         String string = resultSet.getString(1);
-        System.out.println("string = " + string);
+    System.out.println("resultSet.getString(\"email\") = " + resultSet.getString(2));
+    System.out.println("string = " + string);
+
+    ResultSetMetaData rsmd= resultSet.getMetaData();
+    rsmd.getColumnCount();
     }
+
 }
 
