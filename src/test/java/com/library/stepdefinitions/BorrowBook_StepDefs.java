@@ -23,6 +23,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.sql.*;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -183,5 +184,22 @@ public class BorrowBook_StepDefs {
 
 
     }
+@Test
+    @When("user creates a connection and get all user")
+    public void userCreatesAConnectionAndGetAllUser() throws SQLException {
+
+        Connection connection = DriverManager.getConnection(ConfigurationReader.getProperty("dbUrl"),ConfigurationReader.getProperty("dbUsername"),ConfigurationReader.getProperty("dbPassword"));
+        Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+        ResultSet resultSet = statement.executeQuery("select full_name,email from users;");
+
+        resultSet.next();
+        String string = resultSet.getString(1);
+    System.out.println("resultSet.getString(\"email\") = " + resultSet.getString(2));
+    System.out.println("string = " + string);
+
+    ResultSetMetaData rsmd= resultSet.getMetaData();
+    rsmd.getColumnCount();
+    }
+
 }
 
