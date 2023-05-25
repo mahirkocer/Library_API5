@@ -1,16 +1,32 @@
 package com.library.stepdefinitions;
 
 import com.library.pages.BookEditPage;
+import com.library.utilities.ApiUtil;
+import com.library.utilities.ConfigurationReader;
 import com.library.utilities.Driver;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.restassured.RestAssured;
+import static io.restassured.RestAssured.*;
+
+import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Edit_Book_StepDefs {
     BookEditPage bookEditPage=new BookEditPage();
+    Response response;
     @When("user click books")
     public void user_click_books() throws InterruptedException {
         bookEditPage.books.click();
@@ -41,5 +57,132 @@ public class Edit_Book_StepDefs {
         Assertions.assertTrue(bookEditPage.savedBookWrite.isDisplayed());
 
 
+    }
+
+    @Given("I logged Bookit api using {string} and {string}")
+    public void iLoggedBookitApiUsingAnd(String email, String password) {
+
+
+    }
+
+    @When("I send POST request to {string} endpoint with {string}{string}{string}{string}{string}{string}")
+
+    public void iSendPOSTRequestToEndpointWith(String endPoint, String name, String isbn, String year, String author, String book_category, String description) {
+
+
+      response = given().accept(ContentType.JSON)
+                .header("x-library-token", Hooks.token)
+                .formParam("name", name)
+                .formParam("isbn", isbn)
+                .formParam("year", year)
+                .formParam("author", author)
+                .formParam("book_category_id", 3)
+                .formParam("description", description)
+                .when().post(endPoint);
+
+    }
+
+    @Then("status code should be {int}")
+    public void statusCodeShouldBe(int arg0) {
+
+        Assertions.assertEquals(arg0,response.statusCode());
+    }
+
+    @And("I shoul see {string} message in response body")
+    public void iShoulSeeMessageInResponseBody(String arg0) {
+
+        Assertions.assertEquals(response.path("message"),arg0);
+    }
+
+    @Then("I update book's author to {string} that has {int} id number")
+    public void iUpdateAuthorToThatHasIdNumber(String author, int bookId) {
+
+        Map as = given().accept(ContentType.JSON)
+                .header("x-library-token", Hooks.token)
+                .when().get("/get_book_by_id/" + bookId)
+                .then().statusCode(200).extract().response().as(Map.class);
+        Map<String,String> book=new HashMap<>();
+        book.putAll(as);
+book.replace("author",author);
+
+given().accept(ContentType.JSON)
+        .contentType(ContentType.JSON)
+      .header("x-library-token", Hooks.token)
+        .body(book)
+        .when().patch("/update_book")
+       .then().statusCode(200);
+
+    }
+
+
+    @When("I send POST request to {string} with following information")
+    public void iSendPOSTRequestToWithFollowingInformation(String endPoint,Map<String,Object> newBook) {
+       response = given().accept(ContentType.JSON)
+               .header("x-library-token", Hooks.token)
+                .formParams(newBook)
+                .when().post(endPoint);
+
+
+    }
+
+    @Then("User should see following parameters")
+    public void userShouldSeeFollowingParameters(List<String> editParameters) {
+        List<String> param=new ArrayList<>();
+        for (WebElement parameter : bookEditPage.parameters) {
+            param.add(parameter.getText());
+        }
+Assertions.assertEquals(editParameters,param);
+
+
+
+    }
+
+    @Then("User should verify that Following categories present")
+    public void userShouldVerifyThatFollowingCategoriesPresent(List<String> bookCathagories) {
+        Select select=new Select(bookEditPage.bookCathagories);
+        List<String> param=new ArrayList<>();
+        List<WebElement> options = select.getOptions();
+        for (WebElement option : options) {
+            param.add(option.getText());
+        }
+        Assertions.assertEquals(bookCathagories,param);
+
+
+    }
+
+    @When("I send to request {string} endpoint")
+    public void iSendToRequestEndpoint(String arg0 ) {
+
+       response = given().accept(ContentType.JSON)
+                .header("x-library-token", Hooks.token)
+                .when().get(arg0);
+
+
+
+    }
+
+    @Then("I should verify that Following categories present")
+    public void iShouldVerifyThatFollowingCategoriesPresent(List<String> list) {
+        JsonPath jsonPath = response.jsonPath();
+        Assertions.assertEquals(list, jsonPath.getList("name"));
+
+    }
+
+    @Then("user should only see all classic books")
+    public void userShouldSeeAllClassaicBooks() {
+        for (int i = 0; i < bookEditPage.pageNumber.size(); i++) {
+            for (WebElement element : bookEditPage.bookCathegoriName) {
+                Assertions.assertEquals(element.getText(),"Classic");
+            }
+            bookEditPage.nextButton.click();
+        }
+
+    }
+
+    @And("user select {string} category")
+    public void userSelectCategory(String arg0) {
+
+        Select select=new Select(bookEditPage.bookCathagories);
+        select.selectByVisibleText("Classic");
     }
 }
