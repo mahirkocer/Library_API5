@@ -46,5 +46,14 @@ public class BookEditPage extends BasePage{
 @FindBy(xpath = "//input[@type='search']")
     public WebElement searchBook;
     @FindBy(xpath = "//tbody/tr//td[4]")
-    public List<WebElement> aouthorName;
+    public WebElement bookauthorName;
+    @FindBy(xpath = "//tbody/tr//td[2]")
+    public WebElement bookIsbn;
+    @FindBy(xpath = "//tbody/tr//td[3]")
+    public WebElement bookName;
+    @FindBy(xpath = "//tbody/tr//td[6]")
+    public WebElement bookYear;
+    @FindBy(xpath = "//tbody/tr//td[5]")
+    public WebElement bookCathegory;
+
 }

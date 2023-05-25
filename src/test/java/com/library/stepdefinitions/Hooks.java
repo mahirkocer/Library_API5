@@ -45,7 +45,7 @@ public class Hooks {
 
     }
 
-    @After("@ui")
+    @After()
     public void tearDown(Scenario scenario) {
         // only takes a screenshot if the scenario fails
         if (scenario.isFailed()) {
